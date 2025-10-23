@@ -586,7 +586,7 @@ height = 0.44683838
 radius = 0.69970703
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vw7on"]
-size = Vector3(0.5356064, 0.9199815, 2.4519691)
+size = Vector3(0.5356064, 0.9199815, 2.6631052)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qkdin"]
 
@@ -795,10 +795,11 @@ shape = SubResource("CylinderShape3D_rhlfb")
 [node name="Arms" type="AnimatableBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Arms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_vw7on")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Arms"]
-transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -3.8147546e-06, 0.37098312, 0.000656128)
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.371139e-08, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_vw7on")
 
 [node name="arms" type="MeshInstance3D" parent="Arms"]

@@ -7,6 +7,10 @@ extends CharacterBody3D
 @export var gravity = 9.8
 @export var camera_smooth_speed = 5
 @export var rotation_speed = 10.0
+@export var cart_collision_size = Vector3(1.0, 1.5, 1.0)
+@export var cart_collision_position = Vector3(0, 0.75, -1.2)
+@export var screen_collision_size = Vector3(0.6, 0.8, 0.8)
+@export var screen_collision_position = Vector3(0, 1.5, -0.8)
 #endregion
 
 #region Cart Pushing State Variables
@@ -19,10 +23,16 @@ var original_cart_collision_mask = 0
 #region Screen Carrying State
 var screen_in_range = null
 var carried_screen = null
+var original_screen_collision_layer = 0
+var original_screen_collision_mask = 0
 #endregion
 
 #region Screen Rack State
 var screen_rack_in_range = null
+var transitioning_from_rack = false
+var rack_exit_target_position = Vector3.ZERO
+var rack_exit_target_rotation = Vector3.ZERO
+
 #endregion
 
 #region Print Mode State
@@ -58,7 +68,7 @@ func _ready():
 
 func _unhandled_input(event):
 	# Check for Shift+E to remove screen from press
-	if event.is_action_pressed("interact") and Input.is_key_pressed(KEY_SHIFT):
+	if event.is_action_pressed("interact") and Input.is_action_pressed("shift-modifier"):
 		if in_print_mode and not carried_screen:
 			_remove_screen_from_head()
 			return
@@ -144,33 +154,47 @@ func _unhandled_input(event):
 			return
 		
 		# Enter print zone (allow even if carrying screen)
+# Enter print zone (allow even if carrying screen)
 		if in_print_zone:
 			for zone in print_zones:
 				if zone.is_player_in_zone():
 					current_print_zone = zone
 					print_target_position = zone.global_position + zone.snap_offset
 					print_target_rotation = zone.snap_rotation
-					transitioning_to_print = true
-					if carried_screen:
-						animation_state.travel("Walk_Screen")
-					else:
-						animation_state.travel("Walk")
-					print("=== STARTING TRANSITION ===")
-					print("Current position: ", global_position)
-					print("Target position: ", print_target_position)
-					print("Distance: ", global_position.distance_to(print_target_position))
-					print("Entered print mode")
-					
-					return
-
-func _create_extended_collision():
+			
+				# Remove extended collision BEFORE transitioning if carrying screen
+				if carried_screen and extended_collision:
+					remove_child(extended_collision)
+					extended_collision.queue_free()
+					extended_collision = null
+					print("Removed extended collision before print transition")
+			
+				transitioning_to_print = true
+				if carried_screen:
+					animation_state.travel("Walk_Screen")
+				else:
+					animation_state.travel("Walk")
+				print("=== STARTING TRANSITION ===")
+				print("Current position: ", global_position)
+				print("Target position: ", print_target_position)
+				print("Distance: ", global_position.distance_to(print_target_position))
+				print("Entered print mode")
+			
+			return
+func _create_extended_collision(collision_type: String = "cart"):
 	extended_collision = CollisionShape3D.new()
 	var box_shape = BoxShape3D.new()
-	box_shape.size = Vector3(1.0, 1.5, 1.0)
-	extended_collision.shape = box_shape
-	extended_collision.position = Vector3(0, 0.75, -1.2)
-	add_child(extended_collision)
-
+	
+	if collision_type == "screen":
+		box_shape.size = screen_collision_size
+		extended_collision.shape = box_shape
+		extended_collision.position = screen_collision_position
+	else:  # default to cart
+		box_shape.size = cart_collision_size
+		extended_collision.shape = box_shape
+		extended_collision.position = cart_collision_position
+	
+	add_child(extended_collision)	
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -214,6 +238,16 @@ func _physics_process(delta):
 				press.disable_controls()
 			current_print_zone = null
 			print("Exit transition complete")
+	# Smooth transition when leaving screen rack
+	elif transitioning_from_rack:
+		global_position = global_position.lerp(rack_exit_target_position, 3.0 * delta)
+		global_rotation = global_rotation.lerp(rack_exit_target_rotation, 3.0 * delta)
+		velocity = Vector3.ZERO
+		if global_position.distance_to(rack_exit_target_position) < 0.15:
+			transitioning_from_rack = false
+			global_position = rack_exit_target_position
+			animation_state.travel("Idle_Screen")
+			print("Rack exit transition complete")
 	elif not in_print_mode:
 		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		var direction = (camera.transform.basis.z * input_dir.y + camera.transform.basis.x * input_dir.x).normalized()
@@ -279,6 +313,14 @@ func play_press_animation(anim_name: String):
 	animation_state.travel(anim_name)
 
 func _pickup_screen():
+	# Store original collision settings
+	original_screen_collision_layer = carried_screen.collision_layer
+	original_screen_collision_mask = carried_screen.collision_mask
+	
+	# Disable screen collision
+	carried_screen.collision_layer = 0
+	carried_screen.collision_mask = 0
+	
 	carried_screen = screen_in_range.get_parent()
 	carried_screen.freeze = true
 	carried_screen.linear_velocity = Vector3.ZERO
@@ -287,6 +329,8 @@ func _pickup_screen():
 	add_child(carried_screen)
 	carried_screen.position = Vector3(0, 1.2, -0.5)
 	carried_screen.rotation = Vector3.ZERO
+	_create_extended_collision("screen")
+	print("Created extended collision for screen")
 	print("Picked up screen")
 
 func _drop_screen():
@@ -297,6 +341,13 @@ func _drop_screen():
 	get_tree().get_root().add_child(carried_screen)
 	carried_screen.global_transform = screen_transform
 	carried_screen.freeze = false
+	if extended_collision:
+		remove_child(extended_collision)
+		extended_collision.queue_free()
+		extended_collision = null
+	# Restore screen collision
+	carried_screen.collision_layer = original_cart_collision_layer
+	carried_screen.collision_mask = original_cart_collision_mask
 	carried_screen = null
 	print("Dropped screen")
 
@@ -311,8 +362,18 @@ func _store_screen_to_rack():
 		print("ERROR: No screen rack in range!")
 		return
 	
+	# Restore screen collision BEFORE storing it
+	carried_screen.collision_layer = original_screen_collision_layer
+	carried_screen.collision_mask = original_screen_collision_mask
+	
 	# Store the screen in the rack
 	if screen_rack_in_range.load_screen_to_rack(carried_screen):
+		# Remove extended collision
+		if extended_collision:
+			remove_child(extended_collision)
+			extended_collision.queue_free()
+			extended_collision = null
+		
 		carried_screen = null
 		print("Successfully stored screen in rack")
 	else:
@@ -343,13 +404,31 @@ func _retrieve_screen_from_rack():
 		print("Failed to retrieve screen from rack")
 		return
 	
-	# Add screen to player
+	# Store original collision settings from the SCREEN (not carried_screen yet!)
+	original_screen_collision_layer = screen.collision_layer
+	original_screen_collision_mask = screen.collision_mask
+	
+	# Disable screen collision
+	screen.collision_layer = 0
+	screen.collision_mask = 0
+	
+	# Pick up screen immediately
 	add_child(screen)
 	screen.position = Vector3(0, 1.2, -0.5)
 	screen.rotation = Vector3.ZERO
 	screen.freeze = true
 	carried_screen = screen
-	print("Retrieved screen from rack")
+	print("Screen picked up from rack")
+	
+	_create_extended_collision("screen")
+	print("Created extended collision for screen")
+	
+	# Start transition (rotate and walk backwards WITH screen)
+	transitioning_from_rack = true
+	rack_exit_target_rotation = global_rotation + Vector3(0, PI, 0)
+	rack_exit_target_position = global_position + global_transform.basis.z * 0.5
+	animation_state.travel("Walk_Screen")
+	print("Starting rack exit transition with screen")
 
 func _load_screen_to_head():
 	print("=== _load_screen_to_head called ===")
@@ -375,6 +454,17 @@ func _load_screen_to_head():
 		print("All head slots are full!")
 		return
 	
+	# Remove extended collision
+	if extended_collision:
+		remove_child(extended_collision)
+		extended_collision.queue_free()
+		extended_collision = null
+		print("Removed extended collision")
+	
+	# Restore original screen collision before loading it
+	carried_screen.collision_layer = original_screen_collision_layer
+	carried_screen.collision_mask = original_screen_collision_mask
+	
 	# Load the screen
 	print("Attempting to load screen to slot ", slot_index)
 	if press.load_screen_to_slot(carried_screen, slot_index):
@@ -382,7 +472,7 @@ func _load_screen_to_head():
 		print("Successfully loaded screen to head")
 	else:
 		print("Failed to load screen to head")
-
+		
 func _remove_screen_from_head():
 	print("=== _remove_screen_from_head called ===")
 	
@@ -400,6 +490,14 @@ func _remove_screen_from_head():
 		print("No screen to remove")
 		return
 	
+	# Store original collision settings from the SCREEN (not carried_screen yet!)
+	original_screen_collision_layer = screen.collision_layer
+	original_screen_collision_mask = screen.collision_mask
+	
+	# Disable screen collision
+	screen.collision_layer = 0
+	screen.collision_mask = 0
+	
 	# Add screen to player
 	add_child(screen)
 	screen.position = Vector3(0, 1.2, -0.5)
@@ -407,6 +505,9 @@ func _remove_screen_from_head():
 	screen.freeze = true
 	carried_screen = screen
 	print("Screen removed and added to player")
+	
+	_create_extended_collision("screen")
+	print("Created extended collision for screen")
 	
 	# Exit print mode
 	in_print_mode = false
