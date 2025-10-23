@@ -64,7 +64,7 @@ func _process(delta):
 	_handle_input()
 
 func _handle_input():
-	var shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+	var shift_pressed = Input.is_key_pressed(KEY_SHIFT) or Input.is_action_pressed("shift-modifier")	
 	
 	if shift_pressed:
 		if Input.is_action_just_pressed("move_left"):
