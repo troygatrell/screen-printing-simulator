@@ -1,5 +1,26 @@
 # print_mode_controller.gd
-# Handles all print mode interactions for the player
+# Handles all print zone interactions and screen loading/unloading.
+#
+# RESPONSIBILITIES:
+# - Transition animations to/from print mode
+# - Player position/rotation snapping to print zone
+# - Screen loading/unloading to press heads
+# - Camera zoom control during print mode
+# - Press control enabling/disabling
+# - Auto-loading screens when entering with one carried
+#
+# SIGNALS:
+# - entered_print_mode: Emitted when player enters print mode
+# - exited_print_mode: Emitted when player exits print mode
+# - screen_loaded_to_press: Emitted when screen is loaded to press
+# - screen_removed_from_press: Emitted when screen is removed from press
+#
+# DEPENDENCIES:
+# - Must be child of player CharacterBody3D
+# - Requires ScreenCarrier sibling node
+# - Requires print zones in "print_zones" group
+# - Requires press in "press" group
+# - Requires Camera3D in viewport
 
 extends Node
 
