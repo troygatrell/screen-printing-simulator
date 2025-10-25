@@ -1,7 +1,10 @@
 # press_controller.gd
 # Hybrid controller for the screen printing press
-# - Rotations use boolean flags (can happen simultaneously)
-# - Head lowering uses state machine (exclusive actions)
+#
+# ARCHITECTURE:
+# - Rotations (arms/heads) use boolean flags and can happen simultaneously
+# - Head lowering uses a state machine for exclusive actions (can't lower while rotating)
+# - This hybrid approach allows natural carousel movement while preventing invalid states
 
 extends Node3D
 
@@ -205,6 +208,9 @@ func _update_carousel_rotations(delta):
 # ============================================================================
 # HEAD ARM UPDATE (State Machine)
 # ============================================================================
+# EXCLUSIVE SYSTEM: Head lowering uses state machine
+# Cannot rotate carousels while head is lowered
+# State flow: IDLE -> LOWERING -> LOWERED -> RAISING -> IDLE
 
 func _update_head_arm(delta):
 	"""Update head arm position based on state"""
@@ -273,6 +279,8 @@ func _update_raising(delta):
 # ============================================================================
 # ROTATION COMMANDS
 # ============================================================================
+# CONCURRENT SYSTEM: Arms and heads can rotate at the same time
+# Uses boolean flags rather than state machine
 
 func _start_rotate_arms_left():
 	"""Begin rotating arms carousel left"""
