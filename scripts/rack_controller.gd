@@ -1,5 +1,22 @@
 # rack_controller.gd
-# Handles all screen rack interaction for the player
+# Handles all screen rack storage and retrieval interactions.
+#
+# RESPONSIBILITIES:
+# - Rack detection and range checking
+# - Screen storage to rack slots
+# - Screen retrieval from rack slots
+# - Exit transition animation after retrieval
+# - Collision management during transitions
+# - Coordinating with ScreenCarrier for screen transfers
+#
+# SIGNALS:
+# - screen_stored_to_rack: Emitted when screen is stored in rack
+# - screen_retrieved_from_rack: Emitted when screen is retrieved from rack
+#
+# DEPENDENCIES:
+# - Must be child of player CharacterBody3D
+# - Requires ScreenCarrier sibling node
+# - Requires racks (detected at runtime via range detection)
 
 extends Node
 

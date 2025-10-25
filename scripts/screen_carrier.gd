@@ -1,5 +1,21 @@
 # screen_carrier.gd
-# Handles all screen carrying mechanics for the player
+# Handles all screen carrying mechanics for the player.
+#
+# RESPONSIBILITIES:
+# - Screen pickup and drop mechanics
+# - Extended collision detection while carrying
+# - Screen transfer to/from other systems (press, rack)
+# - Position and rotation management of carried screen
+# - Collision state management during transitions
+#
+# SIGNALS:
+# - screen_picked_up: Emitted when player picks up a screen
+# - screen_dropped: Emitted when player drops a screen
+#
+# DEPENDENCIES:
+# - Must be child of player CharacterBody3D
+# - Requires screens in "screens" group
+# - Used by PrintModeController and RackController
 
 extends Node
 

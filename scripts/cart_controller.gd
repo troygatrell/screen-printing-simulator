@@ -1,5 +1,21 @@
 # cart_controller.gd
-# Handles all cart pushing mechanics for the player
+# Handles all cart pushing mechanics for the player.
+#
+# RESPONSIBILITIES:
+# - Tank-control physics for cart pushing
+# - Extended collision detection while pushing
+# - Cart grabbing/releasing logic
+# - Snapping carts to cart zones
+# - Managing cart physics state (freeze/unfreeze)
+#
+# SIGNALS:
+# - cart_grabbed: Emitted when player grabs a cart
+# - cart_released: Emitted when player releases a cart
+#
+# DEPENDENCIES:
+# - Must be child of player CharacterBody3D
+# - Requires cart zones in "cart_zones" group
+# - Requires cart handles in "carts" group
 
 extends Node
 
