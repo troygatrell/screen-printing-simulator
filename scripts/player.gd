@@ -3,7 +3,10 @@
 
 extends CharacterBody3D
 
-#region State Machine
+# ============================================================================
+# STATE MACHINE
+# ============================================================================
+
 enum State {
 	IDLE,                          # Standing still
 	WALKING,                       # Moving normally
@@ -16,16 +19,20 @@ enum State {
 }
 
 var current_state = State.IDLE
-#endregion
 
-#region Export Variables
+# ============================================================================
+# EXPORT VARIABLES
+# ============================================================================
+
 @export var speed: int
 @export var gravity = 9.8
 @export var camera_smooth_speed = 5
 @export var rotation_speed = 10.0
-#endregion
 
-#region Node References
+# ============================================================================
+# NODE REFERENCES
+# ============================================================================
+
 @onready var camera = get_viewport().get_camera_3d()
 @onready var initial_camera_offset = camera.global_position - global_position
 @onready var camera_offset = initial_camera_offset
@@ -36,7 +43,6 @@ var current_state = State.IDLE
 @onready var screen_carrier = $ScreenCarrier
 @onready var print_mode_controller = $PrintModeController
 @onready var rack_controller = $RackController
-#endregion
 
 # ============================================================================
 # LIFECYCLE FUNCTIONS
@@ -48,13 +54,8 @@ func _ready():
 	
 	# Connect controller signals
 	if cart_controller:
-		cart_controller.cart_grabbed.connect(_on_cart_grabbed)
 		cart_controller.cart_released.connect(_on_cart_released)
-	
-	if screen_carrier:
-		screen_carrier.screen_picked_up.connect(_on_screen_picked_up)
-		screen_carrier.screen_dropped.connect(_on_screen_dropped)
-	
+
 	add_to_group("player")
 
 func _physics_process(delta):
@@ -209,7 +210,6 @@ func _exit_state(old_state: State):
 			var press = get_tree().get_first_node_in_group("press")
 			if press:
 				press.disable_controls()
-			# Restore camera
 
 func _enter_state(new_state: State):
 	"""Setup when entering a state"""
@@ -247,7 +247,7 @@ func _enter_state(new_state: State):
 		
 		State.TRANSITIONING_FROM_RACK:
 			animation_state.travel("Walk_Screen")
-				# Controller handles setup in retrieve_screen_from_rack()
+			# Controller handles setup in retrieve_screen_from_rack()
 
 # ============================================================================
 # STATE UPDATE FUNCTIONS
@@ -382,22 +382,10 @@ func _on_grab_zone_area_exited(area):
 	elif area.is_in_group("screen_racks") and rack_controller:
 		rack_controller.rack_exited_range(area.get_parent())
 
-func _on_cart_grabbed():
-	"""Called when CartController grabs a cart"""
-	print("Player: Cart grabbed signal received")
-
 func _on_cart_released():
 	"""Called when CartController releases a cart"""
 	print("Player: Cart released signal received")
 	change_state(State.IDLE)
-
-func _on_screen_picked_up():
-	"""Called when ScreenCarrier picks up a screen"""
-	print("Player: Screen picked up signal received")
-
-func _on_screen_dropped():
-	"""Called when ScreenCarrier drops a screen"""
-	print("Player: Screen dropped signal received")
 
 # ============================================================================
 # ANIMATION CONTROL
