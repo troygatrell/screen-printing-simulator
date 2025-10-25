@@ -585,7 +585,7 @@ shadow_mesh = SubResource("ArrayMesh_dcmxo")
 size = Vector3(0.668663, 1.3981934, 0.6368866)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u00w"]
-size = Vector3(0.6431885, 1.3937988, 0.6496582)
+size = Vector3(0.9796486, 1.3937988, 1.0664673)
 
 [node name="ScreenRack" type="Node3D"]
 script = ExtResource("1_4u00w")
@@ -718,11 +718,10 @@ skeleton = NodePath("")
 transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, -0.281318, 0.14585538, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RackModel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.014507294, 0.70251465, 0.0006637573)
 shape = SubResource("BoxShape3D_qa1mb")
 
 [node name="InteractionArea" type="Area3D" parent="." groups=["screen_racks"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47599506, 0.6759033, -0.006713867)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.7, 0)
 shape = SubResource("BoxShape3D_4u00w")
