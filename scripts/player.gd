@@ -12,6 +12,7 @@ enum State {
 	WALKING,                       # Moving normally
 	PUSHING_CART,                  # Pushing a cart with tank controls
 	CARRYING_SCREEN,               # Walking while holding a screen
+	CARRYING_SHIRT,                # Walking while holding a shirt
 	TRANSITIONING_TO_PRINT,        # Walking to the press
 	IN_PRINT_MODE,                 # At the press, controls locked
 	TRANSITIONING_FROM_PRINT,      # Walking away from press
@@ -43,6 +44,7 @@ var current_state = State.IDLE
 @onready var screen_carrier = $ScreenCarrier
 @onready var print_mode_controller = $PrintModeController
 @onready var rack_controller = $RackController
+@onready var shirt_carrier = $ShirtCarrier
 
 # ============================================================================
 # LIFECYCLE FUNCTIONS
@@ -55,6 +57,10 @@ func _ready():
 	# Connect controller signals
 	if cart_controller:
 		cart_controller.cart_released.connect(_on_cart_released)
+		
+	if shirt_carrier:
+		shirt_carrier.shirt_picked_up.connect(_on_shirt_picked_up)
+		shirt_carrier.shirt_loaded_to_cart.connect(_on_shirt_loaded_to_cart)
 
 	add_to_group("player")
 
@@ -69,6 +75,8 @@ func _physics_process(delta):
 			_update_idle(delta)
 		State.WALKING:
 			_update_walking(delta)
+		State.CARRYING_SHIRT:
+			_update_carrying_shirt(delta)
 		State.CARRYING_SCREEN:
 			_update_carrying_screen(delta)
 		State.PUSHING_CART:
@@ -97,6 +105,19 @@ func _physics_process(delta):
 # ============================================================================
 
 func _unhandled_input(event):
+	# Handle Q in print mode (for rotation)
+	if current_state == State.IN_PRINT_MODE:
+		if event.is_action_pressed("rotate_in_print_mode"):  # Q key
+			if print_mode_controller.can_rotate_to_cart():
+				print_mode_controller.rotate_to_cart()
+				return
+			elif print_mode_controller.can_rotate_to_press():
+				print_mode_controller.rotate_to_press()
+				return
+	
+	if not event.is_action_pressed("interact"):
+		return
+
 	if not event.is_action_pressed("interact"):
 		return
 	
@@ -106,6 +127,8 @@ func _unhandled_input(event):
 			_handle_idle_input()
 		State.WALKING:
 			_handle_walking_input()
+		State.CARRYING_SHIRT:
+			_handle_carrying_shirt_input()
 		State.CARRYING_SCREEN:
 			_handle_carrying_screen_input()
 		State.PUSHING_CART:
@@ -132,6 +155,12 @@ func _handle_idle_input():
 		if rack_controller.retrieve_screen_from_rack():
 			change_state(State.TRANSITIONING_FROM_RACK)
 		return
+		
+	# Can pick up shirt
+	if shirt_carrier and shirt_carrier.can_pickup_shirt():
+		if shirt_carrier.pickup_shirt():
+			change_state(State.CARRYING_SHIRT)
+		return
 	
 	# Can enter print zone (even without screen)
 	var zone = print_mode_controller.find_available_print_zone()
@@ -140,9 +169,63 @@ func _handle_idle_input():
 			change_state(State.TRANSITIONING_TO_PRINT)
 		return
 
+func _handle_carrying_shirt_input():
+	"""Handle interact button when carrying shirt"""
+	print("DEBUG: Trying to load shirt to cart...")
+	
+	# Check if at cart loading zone
+	var cart_areas = get_tree().get_nodes_in_group("carts")
+	print("DEBUG: Found ", cart_areas.size(), " things in 'carts' group")
+	
+	for area in cart_areas:
+		print("DEBUG: Checking ", area.name)
+		# Get the actual cart (parent of the area)
+		var cart = area.get_parent() if area.has_method("get_parent") else area
+		
+		# If it's already the cart, use it directly
+		if not cart.has_method("is_player_at_loading_zone"):
+			cart = area  # Try using the area itself
+		
+		print("DEBUG: Cart node: ", cart.name)
+		
+		if cart.has_method("is_player_at_loading_zone"):
+			print("DEBUG: Checking if player at loading zone...")
+			if cart.is_player_at_loading_zone():
+				print("DEBUG: Player IS at loading zone! Loading shirt...")
+				if shirt_carrier.load_shirt_to_cart(cart):
+					change_state(State.IDLE)
+					return
+			else:
+				print("DEBUG: Player NOT at loading zone")
+		else:
+			print("DEBUG: Node doesn't have is_player_at_loading_zone method")
+	
+	print("Not at cart loading zone!")
+
 func _handle_walking_input():
 	"""Handle interact button when walking"""
 	_handle_idle_input()
+
+func _update_carrying_shirt(delta):
+	"""Player is carrying a shirt to cart"""
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	
+	if input_dir == Vector2.ZERO:
+		animation_state.travel("Idle")  # Need to update with new animation
+		velocity.x = move_toward(velocity.x, 0, speed)
+		velocity.z = move_toward(velocity.z, 0, speed)
+		return
+	
+	animation_state.travel("Walk")  # Need to update with new animation
+	
+	var direction = (camera.transform.basis.z * input_dir.y + camera.transform.basis.x * input_dir.x).normalized()
+	direction.y = 0
+	
+	velocity.x = direction.x * speed
+	velocity.z = direction.z * speed
+	
+	var target_basis = Transform3D().looking_at(direction, Vector3.UP).basis
+	transform.basis = transform.basis.slerp(target_basis, rotation_speed * delta)
 
 func _handle_carrying_screen_input():
 	"""Handle interact button when carrying screen"""
@@ -178,14 +261,21 @@ func _handle_print_mode_input():
 	
 	match action:
 		print_mode_controller.InputAction.REMOVE_SCREEN:
-			# Controller already removed screen, just exit
 			change_state(State.TRANSITIONING_FROM_PRINT)
 		print_mode_controller.InputAction.EXIT:
-			# Regular exit
 			print_mode_controller.start_transition_from_print()
 			change_state(State.TRANSITIONING_FROM_PRINT)
+		print_mode_controller.InputAction.ROTATE_TO_CART:
+			pass  # Rotation handled by controller
+		print_mode_controller.InputAction.ROTATE_TO_PRESS:
+			pass  # Rotation handled by controller
+		print_mode_controller.InputAction.PICKUP_SHIRT:
+			print("Picked up shirt from cart in print mode")
+		print_mode_controller.InputAction.MOUNT_SHIRT:
+			print("Mounted shirt on platen")
 		print_mode_controller.InputAction.NONE:
-			pass  # Do nothing
+			pass
+
 
 # ============================================================================
 # STATE MACHINE
@@ -372,6 +462,12 @@ func _on_grab_zone_area_entered(area):
 		screen_carrier.screen_in_range_entered(area)
 	elif area.is_in_group("screen_racks") and rack_controller:
 		rack_controller.rack_entered_range(area.get_parent())
+		
+	# Detect shirts
+	if area.is_in_group("shirts"):
+		var shirt = area.get_parent()
+		if shirt is RigidBody3D and shirt_carrier:
+			shirt_carrier.shirt_entered_range(shirt)
 
 func _on_grab_zone_area_exited(area):
 	"""Detect when objects leave the player's grab zone"""
@@ -381,11 +477,26 @@ func _on_grab_zone_area_exited(area):
 		screen_carrier.screen_in_range_exited(area)
 	elif area.is_in_group("screen_racks") and rack_controller:
 		rack_controller.rack_exited_range(area.get_parent())
+		
+	# Detect shirts leaving
+	if area.is_in_group("shirts"):
+		var shirt = area.get_parent()
+		if shirt is RigidBody3D and shirt_carrier:
+			shirt_carrier.shirt_exited_range(shirt)
 
 func _on_cart_released():
 	"""Called when CartController releases a cart"""
 	print("Player: Cart released signal received")
 	change_state(State.IDLE)
+	
+func _on_shirt_picked_up():
+	"""Called when ShirtCarrier picks up a shirt"""
+	print("Player: Shirt picked up")
+
+func _on_shirt_loaded_to_cart():
+	"""Called when shirt is loaded into cart"""
+	print("Player: Shirt loaded to cart")
+
 
 # ============================================================================
 # ANIMATION CONTROL

@@ -1,7 +1,9 @@
-[gd_scene load_steps=48 format=4 uid="uid://q04av1w1mpe"]
+[gd_scene load_steps=51 format=4 uid="uid://q04av1w1mpe"]
 
 [ext_resource type="Texture2D" uid="uid://dt2hh6hwec5xi" path="res://glb/cart_black plastic.png" id="1_bttn7"]
 [ext_resource type="Material" uid="uid://2q58vedv7jt2" path="res://materials/black_plastic.tres" id="1_p2bbo"]
+[ext_resource type="Script" uid="uid://cfg3e0iyi3lut" path="res://scripts/cart.gd" id="1_wuvqt"]
+[ext_resource type="PackedScene" uid="uid://dibc3kj5c1o1r" path="res://scenes/shirt.tscn" id="2_766cb"]
 [ext_resource type="Texture2D" uid="uid://c86scsuq43d3x" path="res://glb/cart_metallic silver.png" id="2_p2bbo"]
 [ext_resource type="Material" uid="uid://frkdndy2yde2" path="res://materials/silver_metal.tres" id="3_e671f"]
 
@@ -10,6 +12,8 @@ size = Vector3(0.8432989, 0.6176071, 1.5239639)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p2bbo"]
 size = Vector3(1, 0.12023926, 0.14648438)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e671f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uor44"]
 resource_name = "Black Plastic"
@@ -663,6 +667,10 @@ shadow_mesh = SubResource("ArrayMesh_klkun")
 [node name="Cart" type="RigidBody3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 mass = 20.0
+script = ExtResource("1_wuvqt")
+stack_position = Vector3(0, 0.7, 0.5)
+stack_rotation_x = 0.0
+preload_shirt_scene = ExtResource("2_766cb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0016198158, 0.3093071, -0.042720795)
@@ -673,6 +681,13 @@ shape = SubResource("BoxShape3D_bttn7")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HandleZone"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2397544e-08, 0.59381557, -0.79734254)
 shape = SubResource("BoxShape3D_p2bbo")
+
+[node name="LoadingZone" type="Area3D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LoadingZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.244627e-08, 0.64852905, 0.71430206)
+shape = SubResource("BoxShape3D_e671f")
 
 [node name="Cart" type="MeshInstance3D" parent="."]
 transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0)

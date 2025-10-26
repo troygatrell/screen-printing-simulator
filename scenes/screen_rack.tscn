@@ -585,12 +585,12 @@ shadow_mesh = SubResource("ArrayMesh_dcmxo")
 size = Vector3(0.668663, 1.3981934, 0.6368866)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u00w"]
-size = Vector3(0.9796486, 1.3937988, 1.0664673)
+size = Vector3(0.9429493, 1.3937988, 0.8750305)
 
 [node name="ScreenRack" type="Node3D"]
 script = ExtResource("1_4u00w")
 preload_screen_scene = ExtResource("2_w1ryf")
-preload_count = 6
+preload_count = 8
 
 [node name="RackModel" type="StaticBody3D" parent="."]
 
@@ -723,5 +723,5 @@ shape = SubResource("BoxShape3D_qa1mb")
 [node name="InteractionArea" type="Area3D" parent="." groups=["screen_racks"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.7, 0)
 shape = SubResource("BoxShape3D_4u00w")

@@ -46,6 +46,7 @@ var head_state = HeadState.IDLE
 #region Position Tracking
 var arms_current_position = 0
 var heads_current_position = 0
+var platen_shirts = [null, null, null, null]  # Track shirt on each platen (0-3)
 #endregion
 
 #region Arms Rotation State
@@ -703,6 +704,36 @@ func _preload_screens():
 			screen.queue_free()
 	
 	print("=== PRELOAD COMPLETE ===")
+	
+	# Add near the bottom, before utility functions
+func is_platen_empty(platen_index: int) -> bool:
+	"""Check if a platen slot is empty"""
+	if platen_index < 0 or platen_index >= 4:
+		return false
+	return platen_shirts[platen_index] == null
+
+func mount_shirt_on_current_platen(shirt: RigidBody3D) -> bool:
+	"""Mount a shirt on the current platen in front of player"""
+	var platen_index = arms_current_position
+	
+	if not is_platen_empty(platen_index):
+		print("Press: Platen ", platen_index, " already has a shirt!")
+		return false
+	
+	# Store reference
+	platen_shirts[platen_index] = shirt
+	
+	print("Press: Shirt mounted on platen ", platen_index)
+	return true
+
+func unmount_shirt_from_platen(platen_index: int) -> RigidBody3D:
+	"""Remove shirt from a platen"""
+	if platen_index < 0 or platen_index >= 4:
+		return null
+	
+	var shirt = platen_shirts[platen_index]
+	platen_shirts[platen_index] = null
+	return shirt
 
 # ============================================================================
 # UTILITY FUNCTIONS

@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://dibc3kj5c1o1r"]
+
+[ext_resource type="Script" uid="uid://d0qpda75axa20" path="res://scripts/shirt.gd" id="1_jvdad"]
+[ext_resource type="PackedScene" uid="uid://ntihy4slcpsw" path="res://glb/shirt.glb" id="2_skhyq"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2gwm2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jvdad"]
+stencil_flags = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2gwm2"]
+size = Vector3(0.9517212, 0.7090454, 0.037597656)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jvdad"]
+radius = 0.28774774
+
+[node name="Shirt" type="RigidBody3D"]
+script = ExtResource("1_jvdad")
+
+[node name="Model" parent="." instance=ExtResource("2_skhyq")]
+transform = Transform3D(-1, 8.742278e-08, -3.821371e-15, 0, -4.371139e-08, -1, -8.742278e-08, -1, 4.371139e-08, 0, 0, 0)
+
+[node name="PrintPlane" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0.015, -0.44372168)
+mesh = SubResource("PlaneMesh_2gwm2")
+surface_material_override/0 = SubResource("StandardMaterial3D_jvdad")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.363)
+shape = SubResource("BoxShape3D_2gwm2")
+
+[node name="InteractionArea" type="Area3D" parent="." groups=["shirts"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+shape = SubResource("SphereShape3D_jvdad")

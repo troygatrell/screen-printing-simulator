@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://8ri57a0q7flo" path="res://materials/blank_coated_screen.tres" id="2_gakxr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nexl8"]
-size = Vector3(0.5477905, 0.025512695, 0.782959)
+size = Vector3(0.58932495, 0.052642822, 0.782959)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qc0hx"]
 size = Vector3(0.5718727, 0.19618225, 0.79470587)
@@ -82,7 +82,7 @@ axis_lock_angular_y = true
 axis_lock_angular_z = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(-0.99999994, 8.742277e-08, -3.821371e-15, 0, -4.3711385e-08, -1, -8.742277e-08, -0.99999994, 4.371139e-08, -0.00051030144, 0.39777872, -0.00051891844)
+transform = Transform3D(-0.99999994, 8.742277e-08, -3.821371e-15, 0, -4.3711385e-08, -1, -8.742277e-08, -0.99999994, 4.371139e-08, 0, 0.398, 0)
 shape = SubResource("BoxShape3D_nexl8")
 
 [node name="InteractionArea" type="Area3D" parent="." groups=["screens"]]
@@ -90,6 +90,7 @@ transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0,
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(-0.9999958, 8.7422144e-08, -3.8213375e-15, 0, -4.371139e-08, -1, -8.7422144e-08, -0.9999958, 4.371114e-08, -0.00092502084, 0.14840102, -0.0008316094)
+visible = false
 shape = SubResource("BoxShape3D_qc0hx")
 
 [node name="Frame" type="MeshInstance3D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c8p2hw7ullftf"]
+[gd_scene load_steps=12 format=3 uid="uid://c8p2hw7ullftf"]
 
 [ext_resource type="PackedScene" uid="uid://c6xps4n4ja3v0" path="res://scenes/player.tscn" id="1_rwgxs"]
 [ext_resource type="MeshLibrary" uid="uid://buogubprjbtiw" path="res://environment/shop_tileset.meshlib" id="2_4wyf3"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dr2823brkdaw0" path="res://scenes/wall_light.tscn" id="6_qfnet"]
 [ext_resource type="PackedScene" uid="uid://dvwshb6eo1kwh" path="res://scenes/print_zone.tscn" id="7_i7141"]
 [ext_resource type="PackedScene" uid="uid://di1e28e2uw2ke" path="res://scenes/control.tscn" id="9_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://bykqkg40p8kxc" path="res://scenes/staging_table.tscn" id="10_w7kh3"]
 
 [sub_resource type="Environment" id="Environment_k0juu"]
 background_mode = 1
@@ -29,13 +30,14 @@ directional_shadow_split_2 = 0.503
 directional_shadow_split_3 = 0.575
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.70710677, -0.7071068, -0.5, 0.5, -0.5, 3, 2.5)
+transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.7071068, -0.7071068, -0.5, 0.5, 1.529419, 6, 4)
 projection = 1
-size = 4.5
+size = 4.0
+near = 0.001
 far = 25.0
 
 [node name="Player" parent="." instance=ExtResource("1_rwgxs")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.491558, 0.038, 0.66009426)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.470581, 0.038, 0)
 speed = 3
 
 [node name="Objects" type="Node3D" parent="."]
@@ -52,9 +54,14 @@ screen_tilt_angle = 60.0
 transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.3711385e-08, -1.1011524, 0.046057656, -0.25779426)
 top_level = true
 mass = 10.0
+shirt_stack_height = 0.05
 
 [node name="ScreenRack" parent="Objects" instance=ExtResource("5_w7kh3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3614025, 0.03657773, -1.1391602)
+
+[node name="ScreenRack2" parent="Objects" instance=ExtResource("5_w7kh3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3614025, 0.03657773, -0.19959629)
+preload_count = 0
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -95,4 +102,12 @@ transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4
 top_level = true
 zone_type = "Unloading"
 
+[node name="CartZone2" parent="InteractionZones" instance=ExtResource("6_i7141")]
+transform = Transform3D(0.99999976, 0, 0, 0, 1, 0, 0, 0, 0.99999976, 1.9896605, 0, -1.7964594)
+top_level = true
+zone_type = "Unloading"
+
 [node name="Control" parent="." instance=ExtResource("9_7r4gi")]
+
+[node name="StagingTable" parent="." instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 0, 0)
