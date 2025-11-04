@@ -1,22 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://bykqkg40p8kxc"]
 
 [ext_resource type="PackedScene" uid="uid://dibc3kj5c1o1r" path="res://scenes/shirt.tscn" id="1_jkagk"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_e826l"]
-size = Vector3(2, 0.1, 1)
+[ext_resource type="PackedScene" uid="uid://djgvwouo0d13l" path="res://scenes/table.tscn" id="2_e826l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_40mwh"]
-size = Vector3(2, 0.1, 1)
+size = Vector3(1.5376587, 0.1, 0.81640625)
 
 [node name="StagingTable" type="StaticBody3D"]
 
-[node name="TableMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-mesh = SubResource("BoxMesh_e826l")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00015258789, 0.819, 0)
 shape = SubResource("BoxShape3D_40mwh")
 
 [node name="Shirt" parent="." instance=ExtResource("1_jkagk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0.45, 0.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28816873, 0.8749573, 0.34735614)
+
+[node name="Table" parent="." instance=ExtResource("2_e826l")]

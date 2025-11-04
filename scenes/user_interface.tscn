@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://5su3u2xlpsvd"]
+
+[ext_resource type="Script" uid="uid://c3v86bd3rjdpi" path="res://scripts/timetest.gd" id="1_syvep"]
+[ext_resource type="Script" uid="uid://djw1jrkhnuapg" path="res://scripts/money_label.gd" id="2_l2bgj"]
+
+[node name="UserInterface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_syvep")
+
+[node name="MoneyLabel" type="Label" parent="CanvasLayer"]
+offset_top = 30.0
+offset_right = 40.0
+offset_bottom = 53.0
+script = ExtResource("2_l2bgj")

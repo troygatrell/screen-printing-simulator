@@ -1,0 +1,148 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg4rdb380cayc"]
+
+[ext_resource type="Script" uid="uid://3osb7ar0023i" path="res://scripts/desktop_terminal.gd" id="1_mjtlb"]
+
+[node name="DesktopTerminal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mjtlb")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 640.0
+offset_bottom = 480.0
+color = Color(0.101960786, 0.101960786, 0.18039216, 1)
+
+[node name="JobListBackground" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 310.0
+offset_bottom = 470.0
+color = Color(0.08627451, 0.12941177, 0.24313726, 1)
+
+[node name="DetailsBackground" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 330.0
+offset_top = 50.0
+offset_right = 630.0
+offset_bottom = 470.0
+color = Color(0.08627451, 0.12941177, 0.24313726, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+clip_contents = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.265625
+anchor_top = 0.041666668
+anchor_right = 0.734375
+anchor_bottom = 0.9583333
+offset_left = -150.0
+offset_top = 40.0
+offset_right = -170.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="JobListContainer" type="VBoxContainer" parent="ScrollContainer"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AvailableJobsHeader" type="Label" parent="ScrollContainer/JobListContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0.25490198, 1)
+theme_override_font_sizes/font_size = 14
+text = "AVAILABLE JOBS"
+horizontal_alignment = 1
+
+[node name="AvailableJobsList" type="VBoxContainer" parent="ScrollContainer/JobListContainer"]
+layout_mode = 2
+
+[node name="ActiveJobsHeader" type="Label" parent="ScrollContainer/JobListContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0.25490198, 1)
+theme_override_font_sizes/font_size = 14
+text = "ACTIVE JOBS"
+horizontal_alignment = 1
+
+[node name="ActiveJobsList" type="VBoxContainer" parent="ScrollContainer/JobListContainer"]
+layout_mode = 2
+
+[node name="JobDetails" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 60.0
+offset_right = 620.0
+offset_bottom = 460.0
+theme_override_constants/separation = 10
+
+[node name="CustomerLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Customer: "
+
+[node name="ShirtColorLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Shirt Color: "
+
+[node name="NumShirtsLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Quantity: "
+
+[node name="ColorsLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Print Colors: "
+
+[node name="LocationLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Print Location: "
+
+[node name="DueDateLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Due Date: "
+
+[node name="PaymentLabel" type="Label" parent="JobDetails"]
+layout_mode = 2
+text = "Payment: $0"
+
+[node name="SelectJobButton" type="Button" parent="JobDetails"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "Start This Job"
+
+[node name="NoJobsLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.396875
+anchor_top = 0.47604167
+anchor_right = 0.603125
+anchor_bottom = 0.5239583
+offset_left = -214.0
+offset_top = -28.5
+offset_right = -214.0
+offset_bottom = -28.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "No jobs available"
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -213.0
+offset_right = 213.0
+offset_bottom = 28.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 1, 0.25490198, 1)
+theme_override_font_sizes/font_size = 20
+text = "DESKTOP TERMINAL - ORDER MANAGEMENT"

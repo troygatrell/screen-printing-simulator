@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c8p2hw7ullftf"]
+[gd_scene load_steps=14 format=3 uid="uid://c8p2hw7ullftf"]
 
 [ext_resource type="PackedScene" uid="uid://c6xps4n4ja3v0" path="res://scenes/player.tscn" id="1_rwgxs"]
 [ext_resource type="MeshLibrary" uid="uid://buogubprjbtiw" path="res://environment/shop_tileset.meshlib" id="2_4wyf3"]
@@ -8,8 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://c4guvw5rkwguh" path="res://scenes/cart_zone.tscn" id="6_i7141"]
 [ext_resource type="PackedScene" uid="uid://dr2823brkdaw0" path="res://scenes/wall_light.tscn" id="6_qfnet"]
 [ext_resource type="PackedScene" uid="uid://dvwshb6eo1kwh" path="res://scenes/print_zone.tscn" id="7_i7141"]
-[ext_resource type="PackedScene" uid="uid://di1e28e2uw2ke" path="res://scenes/control.tscn" id="9_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://djgvwouo0d13l" path="res://scenes/table.tscn" id="10_e3hyu"]
 [ext_resource type="PackedScene" uid="uid://bykqkg40p8kxc" path="res://scenes/staging_table.tscn" id="10_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://buooqvm50ftjb" path="res://scenes/computer.tscn" id="11_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://5su3u2xlpsvd" path="res://scenes/user_interface.tscn" id="12_q5onr"]
 
 [sub_resource type="Environment" id="Environment_k0juu"]
 background_mode = 1
@@ -21,7 +23,7 @@ background_color = Color(0.44291076, 0.44291076, 0.44291073, 1)
 environment = SubResource("Environment_k0juu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.11828085, 0.54711676, -0.8286573, 0.32008773, 0.7689614, 0.5533915, 0.93997526, -0.33069867, -0.08417195, -1.5729895, 0, 0)
+transform = Transform3D(0.88575613, 0.42989197, 0.17501132, -0.40123397, 0.5196185, 0.75432616, 0.23333961, -0.7383696, 0.63274264, -1.5729895, 0, 0)
 shadow_enabled = true
 shadow_opacity = 0.6
 directional_shadow_mode = 0
@@ -29,85 +31,75 @@ directional_shadow_split_1 = 0.486
 directional_shadow_split_2 = 0.503
 directional_shadow_split_3 = 0.575
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.7071068, -0.7071068, -0.5, 0.5, 1.529419, 6, 4)
-projection = 1
-size = 4.0
-near = 0.001
-far = 25.0
-
 [node name="Player" parent="." instance=ExtResource("1_rwgxs")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.470581, 0.038, 0)
-speed = 3
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.4160266, 0.03545539, -2.4917462)
 
 [node name="Objects" type="Node3D" parent="."]
 
 [node name="Press" parent="Objects" instance=ExtResource("5_71j4m")]
 transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, -2.513935, 0.038, -2.2232661)
 top_level = true
-rotation_speed = 5.0
-arms_rotation_delay = 0.45
-heads_rotation_delay = 0.32
-screen_tilt_angle = 60.0
 
 [node name="Cart" parent="Objects" instance=ExtResource("3_4wyf3")]
 transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.3711385e-08, -1.1011524, 0.046057656, -0.25779426)
 top_level = true
 mass = 10.0
-shirt_stack_height = 0.05
 
 [node name="ScreenRack" parent="Objects" instance=ExtResource("5_w7kh3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3614025, 0.03657773, -1.1391602)
 
 [node name="ScreenRack2" parent="Objects" instance=ExtResource("5_w7kh3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3614025, 0.03657773, -0.19959629)
-preload_count = 0
+
+[node name="StagingTable" parent="Objects" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 0, 0)
 
 [node name="Environment" type="Node3D" parent="."]
 
 [node name="Floor" type="GridMap" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh_library = ExtResource("2_4wyf3")
 cell_size = Vector3(2, 1, 2)
-cell_center_y = false
 data = {
-"cells": PackedInt32Array(65535, 65535, 0, 65535, 0, 0, 0, 0, 0, 1, 1, 0, 65534, 65534, 0, 65534, 1, 0, 1, 65534, 0, 65535, 65534, 0, 0, 65534, 0, 1, 65535, 0, 1, 0, 0, 0, 1, 0, 65535, 1, 0, 65534, 0, 0, 65534, 65535, 0, 0, 65535, 0, 65533, 1, 0, 65533, 0, 0, 65533, 65535, 0, 65533, 65534, 0)
+"cells": PackedInt32Array(-3, 65534, 0, -3, 65535, 0, -3, 0, 0, -3, 1, 0, -2, 1, 0, -2, 0, 0, -1, 0, 0, -1, 1, 0, -65536, 1, 0, -65536, 0, 0, -65535, 0, 0, -65535, 1, 0, -65535, 65535, 0, -65535, 65534, 0, -65536, 65534, 0, -65536, 65535, 0, -1, 65535, 0, -1, 65534, 0, -2, 65534, 0, -2, 65535, 0)
 }
-metadata/_editor_floor_ = Vector3(0, 0, 0)
+metadata/_editor_floor_ = Vector3(0, -1, 0)
 
 [node name="Walls" type="GridMap" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh_library = ExtResource("2_4wyf3")
+cell_size = Vector3(1, 1, 1)
 cell_center_x = false
-cell_center_y = false
 cell_center_z = false
 data = {
-"cells": PackedInt32Array(65534, 65534, 1, 65535, 65534, 1, 0, 65534, 1, 1, 65534, 1, 65533, 2, 1048577, 65533, 1, 1048577, 65533, 0, 1048577, 65533, 65535, 1048577, 65533, 65534, 1)
+"cells": PackedInt32Array(65530, 1, 1048578, 65530, 3, 1048578, 65530, 65534, 1048578, 65530, 65535, 1048578, 3, 65532, 2, 1, 65532, 2, 65535, 65532, 2, 65533, 65532, 2, 65531, 65532, 2, 65530, 65532, 1048578)
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="WallLight" parent="Environment" instance=ExtResource("6_qfnet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.45, -3.8513377)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.75, -4)
 
 [node name="WallLight2" parent="Environment" instance=ExtResource("6_qfnet")]
-transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -5.8707848, 1.45, -0.05426526)
+transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -6, 1.75, 0)
 
 [node name="InteractionZones" type="Node3D" parent="."]
 
 [node name="PrintZone" parent="InteractionZones" instance=ExtResource("7_i7141")]
-transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.3711385e-08, -2.4992697, 0, -0.37059152)
+transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.3711385e-08, -2.499, 0.04, -0.371)
 top_level = true
-camera_focus_point = Vector3(2, 2, 2)
 
 [node name="CartZone" parent="InteractionZones" instance=ExtResource("6_i7141")]
 transform = Transform3D(-4.3711385e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.3711385e-08, -1.0534487, 0, -0.25539398)
 top_level = true
-zone_type = "Unloading"
 
 [node name="CartZone2" parent="InteractionZones" instance=ExtResource("6_i7141")]
 transform = Transform3D(0.99999976, 0, 0, 0, 1, 0, 0, 0, 0.99999976, 1.9896605, 0, -1.7964594)
 top_level = true
-zone_type = "Unloading"
 
-[node name="Control" parent="." instance=ExtResource("9_7r4gi")]
+[node name="Table" parent="." instance=ExtResource("10_e3hyu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47959638, 0.043565586, -3.3851194)
 
-[node name="StagingTable" parent="." instance=ExtResource("10_w7kh3")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 0, 0)
+[node name="Computer" parent="Table" instance=ExtResource("11_e3hyu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14059639, 1.1009414, -0.014946461)
+
+[node name="UserInterface" parent="." instance=ExtResource("12_q5onr")]

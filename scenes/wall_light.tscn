@@ -1,8 +1,6 @@
-[gd_scene load_steps=10 format=4 uid="uid://dr2823brkdaw0"]
+[gd_scene load_steps=8 format=4 uid="uid://dr2823brkdaw0"]
 
-[ext_resource type="Texture2D" uid="uid://dlx7jlbqs1i4u" path="res://glb/light_Poliigon_MetalSteelBrushed_7174_BaseColor.jpg" id="1_8dkg7"]
-[ext_resource type="Texture2D" uid="uid://cdirpge1rdngr" path="res://glb/light_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png" id="2_3r735"]
-[ext_resource type="Texture2D" uid="uid://bn5j4m7dogitf" path="res://glb/light_Poliigon_MetalSteelBrushed_7174_Normal.png" id="3_31d7s"]
+[ext_resource type="Material" uid="uid://c3ceyipkubh7" path="res://materials/metallic_black.tres" id="2_mth0d"]
 [ext_resource type="Texture2D" uid="uid://gujpglcn7uop" path="res://textures/light_mask.png" id="4_3r735"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_3r735"]
@@ -24,14 +22,10 @@ stencil_outline_thickness = 0.0
 resource_name = "Poliigon_MetalSteelBrushed_7174_2K"
 transparency = 4
 cull_mode = 2
-albedo_texture = ExtResource("1_8dkg7")
 metallic = 1.0
-metallic_texture = ExtResource("2_3r735")
 metallic_texture_channel = 2
-roughness_texture = ExtResource("2_3r735")
 roughness_texture_channel = 1
 normal_enabled = true
-normal_texture = ExtResource("3_31d7s")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_05bqv"]
 _surfaces = [{
@@ -72,7 +66,7 @@ shadow_mesh = SubResource("ArrayMesh_05bqv")
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.52112883, 0.8534781, 0, -0.8534781, -0.52112883, 0, 0.07463526, 0.0445565)
 light_color = Color(1, 1, 0.80888695, 1)
-light_energy = 15.0
+light_energy = 5.0
 light_projector = ExtResource("4_3r735")
 light_size = 0.5
 light_specular = 0.0
@@ -86,5 +80,6 @@ mesh = SubResource("BoxMesh_3r735")
 surface_material_override/0 = SubResource("StandardMaterial3D_31d7s")
 
 [node name="Cube" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_mth0d")
 mesh = SubResource("ArrayMesh_3r735")
 skeleton = NodePath("")

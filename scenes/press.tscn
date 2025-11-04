@@ -1,8 +1,6 @@
-[gd_scene load_steps=66 format=4 uid="uid://dc4p34kmlbjfk"]
+[gd_scene load_steps=64 format=4 uid="uid://dc4p34kmlbjfk"]
 
-[ext_resource type="Script" uid="uid://8avgybrfk8pk" path="res://scripts/press_controller.gd" id="1_eayma"]
 [ext_resource type="Material" uid="uid://b2nu4v5buf7fm" path="res://materials/metallic_blue.tres" id="2_5qlwf"]
-[ext_resource type="PackedScene" uid="uid://rp2py5fyf7dt" path="res://scenes/screen.tscn" id="2_eayma"]
 [ext_resource type="Material" uid="uid://frkdndy2yde2" path="res://materials/silver_metal.tres" id="3_eayma"]
 [ext_resource type="Material" uid="uid://c3ceyipkubh7" path="res://materials/metallic_black.tres" id="4_5qlwf"]
 
@@ -656,9 +654,6 @@ shadow_mesh = SubResource("ArrayMesh_u487m")
 size = Vector3(0.5356064, 0.9199815, 2.6631052)
 
 [node name="Press" type="Node3D" groups=["press"]]
-script = ExtResource("1_eayma")
-preload_screen_scene = ExtResource("2_eayma")
-preload_screen_count = 0
 
 [node name="Base" type="StaticBody3D" parent="."]
 

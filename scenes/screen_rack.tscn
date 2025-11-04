@@ -1,7 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://p8l8q0lwkw63"]
-
-[ext_resource type="Script" uid="uid://qyi4nnd5av5i" path="res://scripts/screen_rack.gd" id="1_4u00w"]
-[ext_resource type="PackedScene" uid="uid://rp2py5fyf7dt" path="res://scenes/screen.tscn" id="2_w1ryf"]
+[gd_scene load_steps=57 format=4 uid="uid://p8l8q0lwkw63"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3x5yf"]
 
@@ -588,9 +585,6 @@ size = Vector3(0.668663, 1.3981934, 0.6368866)
 size = Vector3(0.9429493, 1.3937988, 0.8750305)
 
 [node name="ScreenRack" type="Node3D"]
-script = ExtResource("1_4u00w")
-preload_screen_scene = ExtResource("2_w1ryf")
-preload_count = 8
 
 [node name="RackModel" type="StaticBody3D" parent="."]
 

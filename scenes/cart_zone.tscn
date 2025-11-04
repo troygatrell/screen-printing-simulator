@@ -1,6 +1,4 @@
-[gd_scene load_steps=6 format=4 uid="uid://c4guvw5rkwguh"]
-
-[ext_resource type="Script" uid="uid://dpjvi3n22wfht" path="res://scripts/cart_zone.gd" id="1_h6ugo"]
+[gd_scene load_steps=5 format=4 uid="uid://c4guvw5rkwguh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h6ugo"]
 size = Vector3(0.9285011, 0.07531738, 1.5078964)
@@ -44,8 +42,6 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_sj24l")
 
 [node name="CartZone" type="Area3D" groups=["cart_zones"]]
-script = ExtResource("1_h6ugo")
-snap_offset = Vector3(0, 0.036, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0015697479, 0, 4.196167e-05)

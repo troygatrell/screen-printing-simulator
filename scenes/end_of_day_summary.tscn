@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://cowld1uab0gh7"]
+
+[ext_resource type="Script" uid="uid://luyph4nuyn57" path="res://scripts/end_of_day_summary.gd" id="1_0oik4"]
+
+[node name="EndOfDaySummary" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0oik4")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 640.0
+offset_bottom = 480.0
+color = Color(0, 0, 0, 0.6666667)
+
+[node name="SummaryPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContentContainer" type="VBoxContainer" parent="SummaryPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.0
+offset_top = -83.0
+offset_right = 87.0
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DayLabel" type="Label" parent="SummaryPanel/ContentContainer"]
+layout_mode = 2
+text = "Day 1 Complete"
+
+[node name="EarnedLabel" type="Label" parent="SummaryPanel/ContentContainer"]
+layout_mode = 2
+text = "Earned: $0"
+
+[node name="CostsLabel" type="Label" parent="SummaryPanel/ContentContainer"]
+layout_mode = 2
+text = "Costs: -$0"
+
+[node name="ProfitLabel" type="Label" parent="SummaryPanel/ContentContainer"]
+layout_mode = 2
+text = "Profit: $0"
+
+[node name="TotalLabel" type="Label" parent="SummaryPanel/ContentContainer"]
+layout_mode = 2
+text = "Total Money: $0"
+
+[node name="ContinueButton" type="Button" parent="SummaryPanel/ContentContainer"]
+layout_mode = 2
+text = "Continue to Next Day"
