@@ -1,8 +1,9 @@
-[gd_scene load_steps=64 format=4 uid="uid://dc4p34kmlbjfk"]
+[gd_scene load_steps=65 format=4 uid="uid://dc4p34kmlbjfk"]
 
 [ext_resource type="Material" uid="uid://b2nu4v5buf7fm" path="res://materials/metallic_blue.tres" id="2_5qlwf"]
 [ext_resource type="Material" uid="uid://frkdndy2yde2" path="res://materials/silver_metal.tres" id="3_eayma"]
 [ext_resource type="Material" uid="uid://c3ceyipkubh7" path="res://materials/metallic_black.tres" id="4_5qlwf"]
+[ext_resource type="PackedScene" uid="uid://dvwshb6eo1kwh" path="res://scenes/print_zone.tscn" id="4_eayma"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vabl4"]
 
@@ -806,3 +807,6 @@ shape = SubResource("BoxShape3D_vonqd")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Arms"]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.371139e-08, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_vonqd")
+
+[node name="PrintZone" parent="." instance=ExtResource("4_eayma")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.0066838264, 2)

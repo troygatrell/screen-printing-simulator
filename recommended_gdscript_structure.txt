@@ -1,0 +1,62 @@
+# 1. Tool/class_name declarations (if needed)
+class_name MyClass
+extends Node
+
+# 2. Signals
+signal my_signal
+signal another_signal
+
+# 3. Enums
+enum State { IDLE, RUNNING, JUMPING }
+
+# 4. Constants
+const MAX_SPEED = 100
+const GRAVITY = 9.8
+
+# 5. Exported variables (@export)
+@export var player_speed: float = 5.0
+@export var jump_height: float = 10.0
+
+# 6. Public variables
+var health: int = 100
+var is_alive: bool = true
+
+# 7. Private variables (prefixed with _)
+var _internal_timer: float = 0.0
+
+# 8. @onready variables (node references)
+@onready var sprite = $Sprite2D
+@onready var collision = $CollisionShape2D
+
+# 9. Built-in virtual functions (in order they're called)
+func _init():
+	pass
+
+func _ready():
+	pass
+
+func _process(delta):
+	pass
+
+func _physics_process(delta):
+	pass
+
+func _input(event):
+	pass
+
+func _unhandled_input(event):
+	pass
+
+# 10. Public methods (your custom functions)
+func take_damage(amount: int):
+	pass
+
+func heal(amount: int):
+	pass
+
+# 11. Private methods (prefixed with _)
+func _calculate_something():
+	pass
+
+func _update_internal_state():
+	pass

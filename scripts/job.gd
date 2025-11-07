@@ -9,8 +9,13 @@ var customer_name: String
 # Job specifications
 var shirt_color: Color
 var artwork_texture: Texture2D
-var print_location: String  # "full_front", "left_chest", "back"
-var num_colors: int
+
+# CHANGED: Each location has its own color count
+# Array of dictionaries: [{location: "full_front", colors: 3}, {location: "sleeve", colors: 1}]
+var print_locations: Array[Dictionary] = []
+
+# REMOVED: var num_colors: int (we don't need this anymore - it's per location now)
+
 var num_shirts: int
 var due_date: String
 

@@ -11,7 +11,7 @@ var current_time: float = 0.0  # Seconds since start of day
 
 # Time speed (how fast time passes)
 # 1.0 = real time, 60.0 = 1 real second = 1 game minute
-var time_scale: float = 6000.0
+var time_scale: float = 60.0
 
 # Signals to notify other systems
 signal time_updated(current_time: float)

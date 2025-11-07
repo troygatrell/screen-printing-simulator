@@ -47,7 +47,9 @@ grow_vertical = 2
 
 [node name="DayLabel" type="Label" parent="SummaryPanel/ContentContainer"]
 layout_mode = 2
-text = "Day 1 Complete"
+theme_override_font_sizes/font_size = 22
+text = "Day 1 Complete!"
+horizontal_alignment = 1
 
 [node name="EarnedLabel" type="Label" parent="SummaryPanel/ContentContainer"]
 layout_mode = 2

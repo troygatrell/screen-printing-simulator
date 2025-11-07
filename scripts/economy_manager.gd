@@ -5,6 +5,9 @@ extends Node
 var current_money: float = 500.0  # Start with $500
 var daily_earnings: float = 0.0
 
+# Employee tracking
+var num_employees: int = 0
+var cost_per_employee: float = 100.0  # $100/day per employee
 
 # Daily costs
 var daily_rent: float = 200.0
@@ -14,6 +17,7 @@ var daily_materials: float = 100.0
 # Signals
 signal money_changed(new_amount: float)
 signal went_bankrupt
+signal employees_changed(new_count: int)
 
 
 func _ready():
@@ -58,16 +62,13 @@ func subtract_money(amount: float) -> void:
 		emit_signal("went_bankrupt")
 		print("BANKRUPT!")
 
-
 # Check if player can afford something
 func can_afford(amount: float) -> bool:
 	return current_money >= amount
 
-
-# Get total daily operating costs
 func get_daily_costs() -> float:
-	return daily_rent + daily_utilities + daily_materials
-
+	var employee_costs = num_employees * cost_per_employee
+	return daily_rent + daily_utilities + daily_materials + employee_costs
 
 # Deduct daily costs (called at end of day)
 func charge_daily_costs() -> void:
@@ -81,3 +82,17 @@ func reset_daily_earnings():
 func reset():
 	current_money = 500.0
 	daily_earnings = 0.0
+	num_employees = 0  # ADD THIS
+
+# Add an employee
+func hire_employee() -> void:
+	num_employees += 1
+	print("Hired employee #", num_employees)
+	emit_signal("employees_changed", num_employees)
+
+# Remove an employee  
+func fire_employee() -> void:
+	if num_employees > 0:
+		num_employees -= 1
+		print("Fired employee. Remaining: ", num_employees)
+		emit_signal("employees_changed", num_employees)

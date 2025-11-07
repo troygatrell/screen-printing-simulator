@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://ym8j85qv2i3n"]
+
+[ext_resource type="Script" uid="uid://ctwiqj84lnkaf" path="res://scripts/debug_panel.gd" id="1_7of2g"]
+
+[node name="DebugPanel" type="CanvasLayer"]
+script = ExtResource("1_7of2g")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 273.0
+offset_bottom = 236.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="DebugLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "DEBUG PANEL"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpeedLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Time Speed: "
+
+[node name="SlowButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "-"
+
+[node name="TimeSpeedLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "1.0x"
+
+[node name="FastButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="AddMoneyButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Add $100"
+
+[node name="CompleteJobButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Complete Next Job"
+
+[node name="SkipDayButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "End Day"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HireButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Hire Employee"
+
+[node name="FireButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Fire Employee"

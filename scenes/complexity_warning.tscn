@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp5urdywiy1j7"]
+
+[ext_resource type="Script" uid="uid://r801jv58njel" path="res://scripts/complexity_warning.gd" id="1_s7ttt"]
+
+[node name="ComplexityWarning" type="CanvasLayer"]
+script = ExtResource("1_s7ttt")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8666667)
+
+[node name="Panel" type="Panel" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -101.0
+offset_top = -42.5
+offset_right = 101.0
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ComplexityLabel" type="Label" parent="ColorRect/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "⚠️ COMPLEXITY WARNING"
+
+[node name="WarningText" type="Label" parent="ColorRect/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="CancelButton" type="Button" parent="ColorRect/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="AcceptButton" type="Button" parent="ColorRect/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Accept"
